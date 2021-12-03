@@ -65,6 +65,17 @@ async function bootstrap() {
 - Interfaces are a part of Typescript and therefore are not preserved post-compilation.
 - NestJS cannot refer to interfaces in run-time, but can refer to classes.
 
+## Docker
+- Start `posgreSQL`
+```yaml
+docker run --name postgres-nest -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres
+
+# -p host_port:container_port
+# -e envronment variable with POSTGRES_PASSWORD=postgres
+# postgres is the name of postgreSQL image
+```
+- Stop db container: `docker container stop postgres-nest`
+- Remove the container: `docker container rm postgres-nest`
 ## Installation
 
 ```bash
