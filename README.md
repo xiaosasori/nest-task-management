@@ -34,9 +34,34 @@
 
 - `@Injectable()` is used to define that a certain class should have a shared instance across the module. The instance can then be injected using Dependency Injection, and all injectors will have access to the same instance and its state.
 
+## Pipes
+### Definition
+- Pipes operate on the **arguments** to be processed by the route handler, just before the handler is called.
+- Pipes can perform **data transformation** or **data validation**.
+- Pipes can return data - either original or modified - which will be passed on to the route handler.
+- Pipes can throw exceptions. Eceptions thrown will be handled by NestJS and parsed into an error response.
+- Pipes can be asynchronous.
+### Custom Pipe Implementation
+- Pipes are classes annotated with the `@Injectable()` decorator.
+- Pipes must implement the `PipeTransform` generic interface. Therefore, every pipe must have a `transfrom()` method. This method will be called by NestJS to process the arguments.
+- Whatever is returned from the `transform()` method will be passed on to the route handler. Exceptions will be sent back to the client.
+- **Handler-level pipes** are defined at the handler level, via the **@UsePipes()** decorator. Such pipe will process all parameters fo the incoming requests.
+```js
+@Post()
+@UsePipes(SomePipe)
+createTask(@Body('description') desciption) {...}
+```
+- **Global pipes** are defined at the application level and will be applied to any incoming request.
+```js
+async function bootstrap() {
+  const app = await NestFactory.create(ApplicationModule);
+  app.useGlobalPipes(SomePipe);
+  await app.listen(3000);
+}
+```
 ## Other terms
 
-- A DTO is <b>NOT</b> a model definition. It defines the shape of data for a specific case.
+- A DTO is **NOT** a model definition. It defines the shape of data for a specific case.
 - Interfaces are a part of Typescript and therefore are not preserved post-compilation.
 - NestJS cannot refer to interfaces in run-time, but can refer to classes.
 
